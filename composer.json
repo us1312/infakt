@@ -2,6 +2,7 @@
   "name": "sca/infakt",
   "description": "A simple library to work with JSON InFakt",
   "type": "library",
+  "license": "MIT",
   "authors": [
     {
       "name": "SCA",
@@ -18,5 +19,13 @@
     "psr-4": {
       "SCA\\InFakt\\": "src/"
     }
-  }
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/wms/infakt.git"
+    }
+  ],
+  "minimum-stability": "stable",
+  "prefer-stable": true
 }
