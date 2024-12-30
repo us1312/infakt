@@ -1,0 +1,17 @@
+{
+  "name": "sca/infakt",
+  "description": "A simple library to work with JSON InFakt",
+  "type": "library",
+  "authors": [
+    {
+      "name": "SCA",
+      "email": "support@scaa.com",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "SCA\\InFakt\\": "src"
+    }
+  }
+}
