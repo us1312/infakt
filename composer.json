@@ -23,7 +23,7 @@
   "repositories": [
     {
       "type": "git",
-      "url": "https://github.com/your-github-username/infakt.git"
+      "url": "https://github.com/wms/infakt.git"
     }
   ],
   "minimum-stability": "stable",
