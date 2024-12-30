@@ -11,8 +11,8 @@
     }
   ],
   "require": {
-    "symfony/http-client": "^7.2",
-    "symfony/dotenv": "^7.2",
+    "symfony/http-client": "^6.3 || ^7.2",
+    "symfony/dotenv": "^6.3 || ^7.2",
     "php": "^8.0"
   },
   "autoload": {
