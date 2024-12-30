@@ -14,9 +14,11 @@ class ApiClient
     public function __construct(
         private Authenticator       $authenticator,
         private HttpClientInterface $httpClient,
-        private string              $baseUri = 'https://api.infakt.pl/v3'
+        private bool                $sandbox = false,
     ) {
-        $this->baseUri = rtrim($this->baseUri, '/');
+        $this->baseUri = $this->sandbox
+            ? rtrim('https://api.sandbox-infakt.pl/v3,', '/')
+            : rtrim('https://api.infakt.pl/v3', '/');
 
         $this->invoiceVat = new InvoiceVat($this);
         $this->invoiceOss = new InvoiceOss($this);
