@@ -4,18 +4,21 @@ namespace SCA\InFakt\Client;
 
 use SCA\InFakt\Client\Modules\InvoiceOss;
 use SCA\InFakt\Client\Modules\InvoiceVat;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ApiClient
 {
     public InvoiceVat $invoiceVat;
     public InvoiceOss $invoiceOss;
+    private HttpClientInterface $httpClient;
 
     public function __construct(
         private Authenticator       $authenticator,
-        private HttpClientInterface $httpClient,
         private bool                $sandbox = false,
+        ?HttpClientInterface $httpClient = NULL,
     ) {
+        $this->httpClient = $httpClient ?? HttpClient::create();
         $this->baseUri = $this->sandbox
             ? rtrim('https://api.sandbox-infakt.pl/v3,', '/')
             : rtrim('https://api.infakt.pl/v3', '/');
