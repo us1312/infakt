@@ -20,7 +20,7 @@ class ApiClient
     ) {
         $this->httpClient = $httpClient ?? HttpClient::create();
         $this->baseUri = $this->sandbox
-            ? rtrim('https://api.sandbox-infakt.pl/v3,', '/')
+            ? rtrim('https://api.sandbox-infakt.pl/v3', '/')
             : rtrim('https://api.infakt.pl/v3', '/');
 
         $this->vatInvoiceModule = new VatInvoiceModule($this);
