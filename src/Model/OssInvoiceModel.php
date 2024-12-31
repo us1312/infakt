@@ -19,7 +19,7 @@ class OssInvoiceModel
     private ?string $issueDate = null;
     private ?string $paymentDate = null;
     private ?int $advancePrice = null;
-    private string $serviceType;
+    private ?string $serviceType;
     private string $saleType;
     private string $servicePlacePrimary;
     private ?string $servicePlaceSecondary = null;
