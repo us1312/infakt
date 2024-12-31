@@ -2,33 +2,35 @@
 
 namespace SCA\InFakt\Model;
 
+use SCA\InFakt\Util\ValidatorModel;
+
 class OssInvoiceModel
 {
     private ?int $id;
-    private string $number;
+    private ?string $number;
     private string $country;
-    private string $clientEmail;
+    private ?string $clientEmail;
     private string $clientFirstName;
     private string $clientLastName;
-    private string $clientStreet;
-    private string $clientFlatNumber;
-    private string $clientPostCode;
-    private string $serviceDate;
-    private string $issueDate;
-    private string $paymentDate;
-    private int $advancePrice;
+    private ?string $clientStreet;
+    private ?string $clientFlatNumber;
+    private ?string $clientPostCode;
+    private ?string $serviceDate;
+    private ?string $issueDate;
+    private ?string $paymentDate;
+    private ?int $advancePrice;
     private string $serviceType;
     private string $saleType;
     private string $servicePlacePrimary;
-    private string $servicePlaceSecondary;
+    private ?string $servicePlaceSecondary;
     private string $currency;
-    private string $recipientSignature;
-    private string $sellerSignature;
-    private string $notes;
-    private int $netPrice;
-    private int $taxPrice;
-    private int $grossPrice;
-    private bool $checkDuplicateNumber;
+    private ?string $recipientSignature;
+    private ?string $sellerSignature;
+    private ?string $notes;
+    private ?int $netPrice;
+    private ?int $taxPrice;
+    private ?int $grossPrice;
+    private ?bool $checkDuplicateNumber;
     private array $services;
 
     public function getId(): ?int {
@@ -240,9 +242,6 @@ class OssInvoiceModel
     }
 
 
-
-
-
     public function getAll(): array {
         return array_filter(
             [
@@ -275,5 +274,9 @@ class OssInvoiceModel
             ],
             fn($value) => $value !== null && $value !== '' && $value !== false
         );
+    }
+
+    public function validateRequiredFields(): bool|array {
+        return ValidatorModel::validateRequiredFields($this);
     }
 }
