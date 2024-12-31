@@ -2,15 +2,15 @@
 
 namespace SCA\InFakt\Client;
 
-use SCA\InFakt\Client\Modules\InvoiceOss;
-use SCA\InFakt\Client\Modules\InvoiceVat;
+use SCA\InFakt\Client\Modules\OssInvoiceModule;
+use SCA\InFakt\Client\Modules\VatInvoiceModule;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ApiClient
 {
-    public InvoiceVat $invoiceVat;
-    public InvoiceOss $invoiceOss;
+    public VatInvoiceModule $vatInvoiceModule;
+    public OssInvoiceModule $ossInvoiceModule;
     private HttpClientInterface $httpClient;
 
     public function __construct(
@@ -23,8 +23,8 @@ class ApiClient
             ? rtrim('https://api.sandbox-infakt.pl/v3,', '/')
             : rtrim('https://api.infakt.pl/v3', '/');
 
-        $this->invoiceVat = new InvoiceVat($this);
-        $this->invoiceOss = new InvoiceOss($this);
+        $this->vatInvoiceModule = new VatInvoiceModule($this);
+        $this->ossInvoiceModule = new OssInvoiceModule($this);
     }
 
     public function request(string $method, string $endpoint, array $options = []): array {

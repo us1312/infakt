@@ -2,7 +2,7 @@
 
 namespace SCA\InFakt\Model;
 
-class OssInvoice
+class OssInvoiceModel
 {
     private ?int $id;
     private string $number;

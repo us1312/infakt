@@ -2,7 +2,7 @@
 
 namespace SCA\InFakt\Model;
 
-class Product
+class ProductModel
 {
     private ?int $id;
     private string $name;
