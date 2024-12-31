@@ -6,21 +6,29 @@ class OssInvoiceModel
 {
     private ?int $id;
     private string $number;
+    private string $country;
+    private string $clientEmail;
+    private string $clientFirstName;
+    private string $clientLastName;
+    private string $clientStreet;
+    private string $clientFlatNumber;
+    private string $clientPostCode;
+    private string $serviceDate;
     private string $issueDate;
-    private string $saleDate;
     private string $paymentDate;
-    private string $clientName;
-    private string $clientTaxNumber;
-    private string $clientAddress;
-    private string $clientCity;
-    private string $clientZipCode;
-    private string $clientCountry;
-    private array $invoiceEntries;
-    private float $totalNetAmount;
-    private float $totalTaxAmount;
-    private float $totalGrossAmount;
+    private int $advancePrice;
+    private string $serviceType;
+    private string $saleType;
+    private string $servicePlacePrimary;
+    private string $servicePlaceSecondary;
     private string $currency;
-    private string $status;
+    private string $recipientSignature;
+    private string $sellerSignature;
+    private string $notes;
+    private int $netPrice;
+    private int $taxPrice;
+    private int $grossPrice;
+    private bool $checkDuplicateNumber;
     private array $services;
 
     public function getId(): ?int {
@@ -39,20 +47,76 @@ class OssInvoiceModel
         $this->number = $number;
     }
 
+    public function getCountry(): string {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): void {
+        $this->country = $country;
+    }
+
+    public function getClientEmail(): string {
+        return $this->clientEmail;
+    }
+
+    public function setClientEmail(string $clientEmail): void {
+        $this->clientEmail = $clientEmail;
+    }
+
+    public function getClientFirstName(): string {
+        return $this->clientFirstName;
+    }
+
+    public function setClientFirstName(string $clientFirstName): void {
+        $this->clientFirstName = $clientFirstName;
+    }
+
+    public function getClientLastName(): string {
+        return $this->clientLastName;
+    }
+
+    public function setClientLastName(string $clientLastName): void {
+        $this->clientLastName = $clientLastName;
+    }
+
+    public function getClientStreet(): string {
+        return $this->clientStreet;
+    }
+
+    public function setClientStreet(string $clientStreet): void {
+        $this->clientStreet = $clientStreet;
+    }
+
+    public function getClientFlatNumber(): string {
+        return $this->clientFlatNumber;
+    }
+
+    public function setClientFlatNumber(string $clientFlatNumber): void {
+        $this->clientFlatNumber = $clientFlatNumber;
+    }
+
+    public function getClientPostCode(): string {
+        return $this->clientPostCode;
+    }
+
+    public function setClientPostCode(string $clientPostCode): void {
+        $this->clientPostCode = $clientPostCode;
+    }
+
+    public function getServiceDate(): string {
+        return $this->serviceDate;
+    }
+
+    public function setServiceDate(string $serviceDate): void {
+        $this->serviceDate = $serviceDate;
+    }
+
     public function getIssueDate(): string {
         return $this->issueDate;
     }
 
     public function setIssueDate(string $issueDate): void {
         $this->issueDate = $issueDate;
-    }
-
-    public function getSaleDate(): string {
-        return $this->saleDate;
-    }
-
-    public function setSaleDate(string $saleDate): void {
-        $this->saleDate = $saleDate;
     }
 
     public function getPaymentDate(): string {
@@ -63,84 +127,44 @@ class OssInvoiceModel
         $this->paymentDate = $paymentDate;
     }
 
-    public function getClientName(): string {
-        return $this->clientName;
+    public function getAdvancePrice(): int {
+        return $this->advancePrice;
     }
 
-    public function setClientName(string $clientName): void {
-        $this->clientName = $clientName;
+    public function setAdvancePrice(int $advancePrice): void {
+        $this->advancePrice = $advancePrice;
     }
 
-    public function getClientTaxNumber(): string {
-        return $this->clientTaxNumber;
+    public function getServiceType(): string {
+        return $this->serviceType;
     }
 
-    public function setClientTaxNumber(string $clientTaxNumber): void {
-        $this->clientTaxNumber = $clientTaxNumber;
+    public function setServiceType(string $serviceType): void {
+        $this->serviceType = $serviceType;
     }
 
-    public function getClientAddress(): string {
-        return $this->clientAddress;
+    public function getSaleType(): string {
+        return $this->saleType;
     }
 
-    public function setClientAddress(string $clientAddress): void {
-        $this->clientAddress = $clientAddress;
+    public function setSaleType(string $saleType): void {
+        $this->saleType = $saleType;
     }
 
-    public function getClientCity(): string {
-        return $this->clientCity;
+    public function getServicePlacePrimary(): string {
+        return $this->servicePlacePrimary;
     }
 
-    public function setClientCity(string $clientCity): void {
-        $this->clientCity = $clientCity;
+    public function setServicePlacePrimary(string $servicePlacePrimary): void {
+        $this->servicePlacePrimary = $servicePlacePrimary;
     }
 
-    public function getClientZipCode(): string {
-        return $this->clientZipCode;
+    public function getServicePlaceSecondary(): string {
+        return $this->servicePlaceSecondary;
     }
 
-    public function setClientZipCode(string $clientZipCode): void {
-        $this->clientZipCode = $clientZipCode;
-    }
-
-    public function getClientCountry(): string {
-        return $this->clientCountry;
-    }
-
-    public function setClientCountry(string $clientCountry): void {
-        $this->clientCountry = $clientCountry;
-    }
-
-    public function getInvoiceEntries(): array {
-        return $this->invoiceEntries;
-    }
-
-    public function setInvoiceEntries(array $invoiceEntries): void {
-        $this->invoiceEntries = $invoiceEntries;
-    }
-
-    public function getTotalNetAmount(): float {
-        return $this->totalNetAmount;
-    }
-
-    public function setTotalNetAmount(float $totalNetAmount): void {
-        $this->totalNetAmount = $totalNetAmount;
-    }
-
-    public function getTotalTaxAmount(): float {
-        return $this->totalTaxAmount;
-    }
-
-    public function setTotalTaxAmount(float $totalTaxAmount): void {
-        $this->totalTaxAmount = $totalTaxAmount;
-    }
-
-    public function getTotalGrossAmount(): float {
-        return $this->totalGrossAmount;
-    }
-
-    public function setTotalGrossAmount(float $totalGrossAmount): void {
-        $this->totalGrossAmount = $totalGrossAmount;
+    public function setServicePlaceSecondary(string $servicePlaceSecondary): void {
+        $this->servicePlaceSecondary = $servicePlaceSecondary;
     }
 
     public function getCurrency(): string {
@@ -151,12 +175,60 @@ class OssInvoiceModel
         $this->currency = $currency;
     }
 
-    public function getStatus(): string {
-        return $this->status;
+    public function getRecipientSignature(): string {
+        return $this->recipientSignature;
     }
 
-    public function setStatus(string $status): void {
-        $this->status = $status;
+    public function setRecipientSignature(string $recipientSignature): void {
+        $this->recipientSignature = $recipientSignature;
+    }
+
+    public function getSellerSignature(): string {
+        return $this->sellerSignature;
+    }
+
+    public function setSellerSignature(string $sellerSignature): void {
+        $this->sellerSignature = $sellerSignature;
+    }
+
+    public function getNotes(): string {
+        return $this->notes;
+    }
+
+    public function setNotes(string $notes): void {
+        $this->notes = $notes;
+    }
+
+    public function getNetPrice(): int {
+        return $this->netPrice;
+    }
+
+    public function setNetPrice(int $netPrice): void {
+        $this->netPrice = $netPrice;
+    }
+
+    public function getTaxPrice(): int {
+        return $this->taxPrice;
+    }
+
+    public function setTaxPrice(int $taxPrice): void {
+        $this->taxPrice = $taxPrice;
+    }
+
+    public function getGrossPrice(): int {
+        return $this->grossPrice;
+    }
+
+    public function setGrossPrice(int $grossPrice): void {
+        $this->grossPrice = $grossPrice;
+    }
+
+    public function isCheckDuplicateNumber(): bool {
+        return $this->checkDuplicateNumber;
+    }
+
+    public function setCheckDuplicateNumber(bool $checkDuplicateNumber): void {
+        $this->checkDuplicateNumber = $checkDuplicateNumber;
     }
 
     public function getServices(): array {
@@ -169,29 +241,39 @@ class OssInvoiceModel
 
 
 
-   public function getAll(): array {
+
+
+    public function getAll(): array {
         return array_filter(
             [
                 'id' => $this->id,
                 'number' => $this->number,
-                'issueDate' => $this->issueDate,
-                'saleDate' => $this->saleDate,
-                'paymentDate' => $this->paymentDate,
-                'clientName' => $this->clientName,
-                'clientTaxNumber' => $this->clientTaxNumber,
-                'clientAddress' => $this->clientAddress,
-                'clientCity' => $this->clientCity,
-                'clientZipCode' => $this->clientZipCode,
-                'clientCountry' => $this->clientCountry,
-                'invoiceEntries' => $this->invoiceEntries,
-                'totalNetAmount' => $this->totalNetAmount,
-                'totalTaxAmount' => $this->totalTaxAmount,
-                'totalGrossAmount' => $this->totalGrossAmount,
+                'country' => $this->country,
+                'client_email' => $this->clientEmail,
+                'client_first_name' => $this->clientFirstName,
+                'client_last_name' => $this->clientLastName,
+                'client_street' => $this->clientStreet,
+                'client_flat_number' => $this->clientFlatNumber,
+                'client_post_code' => $this->clientPostCode,
+                'service_date' => $this->serviceDate,
+                'issue_date' => $this->issueDate,
+                'payment_date' => $this->paymentDate,
+                'advance_price' => $this->advancePrice,
+                'service_type' => $this->serviceType,
+                'sale_type' => $this->saleType,
+                'service_place_primary' => $this->servicePlacePrimary,
+                'service_place_secondary' => $this->servicePlaceSecondary,
                 'currency' => $this->currency,
-                'status' => $this->status,
+                'recipient_signature' => $this->recipientSignature,
+                'seller_signature' => $this->sellerSignature,
+                'notes' => $this->notes,
+                'net_price' => $this->netPrice,
+                'tax_price' => $this->taxPrice,
+                'gross_price' => $this->grossPrice,
+                'check_duplicate_number' => $this->checkDuplicateNumber,
                 'services' => $this->services,
             ],
             fn($value) => $value !== null && $value !== '' && $value !== false
         );
-   }
+    }
 }
