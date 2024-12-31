@@ -6,32 +6,32 @@ use SCA\InFakt\Util\ValidatorModel;
 
 class OssInvoiceModel
 {
-    private ?int $id;
-    private ?string $number;
+    private ?int $id = null;
+    private ?string $number = null;
     private string $country;
-    private ?string $clientEmail;
+    private ?string $clientEmail = null;
     private string $clientFirstName;
     private string $clientLastName;
-    private ?string $clientStreet;
-    private ?string $clientFlatNumber;
-    private ?string $clientPostCode;
-    private ?string $serviceDate;
-    private ?string $issueDate;
-    private ?string $paymentDate;
-    private ?int $advancePrice;
+    private ?string $clientStreet = null;
+    private ?string $clientFlatNumber = null;
+    private ?string $clientPostCode = null;
+    private ?string $serviceDate = null;
+    private ?string $issueDate = null;
+    private ?string $paymentDate = null;
+    private ?int $advancePrice = null;
     private string $serviceType;
     private string $saleType;
     private string $servicePlacePrimary;
-    private ?string $servicePlaceSecondary;
+    private ?string $servicePlaceSecondary = null;
     private string $currency;
-    private ?string $recipientSignature;
-    private ?string $sellerSignature;
-    private ?string $notes;
-    private ?int $netPrice;
-    private ?int $taxPrice;
-    private ?int $grossPrice;
-    private ?bool $checkDuplicateNumber;
-    private array $services;
+    private ?string $recipientSignature = null;
+    private ?string $sellerSignature = null;
+    private ?string $notes = null;
+    private ?int $netPrice = null;
+    private ?int $taxPrice = null;
+    private ?int $grossPrice = null;
+    private ?bool $checkDuplicateNumber = null;
+    private array $services = [];
 
     public function getId(): ?int {
         return $this->id;
