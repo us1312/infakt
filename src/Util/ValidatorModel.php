@@ -4,8 +4,7 @@ namespace SCA\InFakt\Util;
 
 class ValidatorModel
 {
-    public static function validateRequiredFields(object $object): bool|array
-    {
+    public static function validateRequiredFields(object $object): bool|array {
         $reflection = new \ReflectionClass($object);
         $properties = $reflection->getProperties();
 
@@ -16,6 +15,12 @@ class ValidatorModel
 
             if ($type && !$type->allowsNull()) {
                 $property->setAccessible(true);
+
+                if (!$property->isInitialized($object)) {
+                    $missingFields[] = $property->getName();
+                    continue;
+                }
+
                 $value = $property->getValue($object);
 
                 if (empty($value)) {
