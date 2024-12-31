@@ -2,6 +2,7 @@
 
 namespace SCA\InFakt\Model;
 
+use SCA\InFakt\Util\ModelUtil;
 use SCA\InFakt\Util\ValidatorModel;
 
 class OssInvoiceModel
@@ -242,38 +243,8 @@ class OssInvoiceModel
     }
 
 
-    public function getAll(): array {
-        return array_filter(
-            [
-                'id' => $this->id,
-                'number' => $this->number,
-                'country' => $this->country,
-                'client_email' => $this->clientEmail,
-                'client_first_name' => $this->clientFirstName,
-                'client_last_name' => $this->clientLastName,
-                'client_street' => $this->clientStreet,
-                'client_flat_number' => $this->clientFlatNumber,
-                'client_post_code' => $this->clientPostCode,
-                'service_date' => $this->serviceDate,
-                'issue_date' => $this->issueDate,
-                'payment_date' => $this->paymentDate,
-                'advance_price' => $this->advancePrice,
-                'service_type' => $this->serviceType,
-                'sale_type' => $this->saleType,
-                'service_place_primary' => $this->servicePlacePrimary,
-                'service_place_secondary' => $this->servicePlaceSecondary,
-                'currency' => $this->currency,
-                'recipient_signature' => $this->recipientSignature,
-                'seller_signature' => $this->sellerSignature,
-                'notes' => $this->notes,
-                'net_price' => $this->netPrice,
-                'tax_price' => $this->taxPrice,
-                'gross_price' => $this->grossPrice,
-                'check_duplicate_number' => $this->checkDuplicateNumber,
-                'services' => $this->services,
-            ],
-            fn($value) => $value !== null && $value !== '' && $value !== false
-        );
+    public function getAll($object): array {
+        return ModelUtil::getAll($object);
     }
 
     public function validateRequiredFields(): bool|array {

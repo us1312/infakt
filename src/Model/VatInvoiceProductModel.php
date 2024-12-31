@@ -2,9 +2,10 @@
 
 namespace SCA\InFakt\Model;
 
+use SCA\InFakt\Util\ModelUtil;
 use SCA\InFakt\Util\ValidatorModel;
 
-class ProductModel
+class VatInvoiceProductModel
 {
     public ?int $id = null;
     public string $name;
@@ -179,31 +180,8 @@ class ProductModel
     }
 
 
-    public function getAll(): array {
-        return array_filter(
-            [
-                'id' => $this->id,
-                'name' => $this->name,
-                'symbol' => $this->symbol,
-                'pkwiu' => $this->pkwiu,
-                'cn' => $this->cn,
-                'pkob' => $this->pkob,
-                'unit' => $this->unit,
-                'tax_symbol' => $this->taxSymbol,
-                'quantity' => $this->quantity,
-                'net_price' => $this->netPrice,
-                'tax_price' => $this->taxPrice,
-                'gross_price' => $this->grossPrice,
-                'unit_net_price' => $this->unitNetPrice,
-                'purchase_unit_net_price' => $this->purchaseUnitNetPrice,
-                'purchase_unit_gross_price' => $this->purchaseUnitGrossPrice,
-                'flat_rate_tax_symbol' => $this->flatRateTaxSymbol,
-                'discount' => $this->discount,
-                'unit_net_price_before_discount' => $this->unitNetPriceBeforeDiscount,
-                'gtu_id' => $this->gtuId,
-            ],
-            fn($value) => $value !== null && $value !== '' && $value !== false
-        );
+    public function getAll($object): array {
+        return ModelUtil::getAll($object);
     }
 
     public function validateRequiredFields(): bool|array {
