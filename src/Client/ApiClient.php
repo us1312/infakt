@@ -3,6 +3,7 @@
 namespace SCA\InFakt\Client;
 
 use SCA\InFakt\Client\Modules\OssInvoiceModule;
+use SCA\InFakt\Client\Modules\OssTaxRates;
 use SCA\InFakt\Client\Modules\VatInvoiceModule;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -12,6 +13,7 @@ class ApiClient
     public VatInvoiceModule $vatInvoiceModule;
     public OssInvoiceModule $ossInvoiceModule;
     private HttpClientInterface $httpClient;
+    private string $baseUri;
 
     public function __construct(
         private Authenticator       $authenticator,
@@ -25,6 +27,7 @@ class ApiClient
 
         $this->vatInvoiceModule = new VatInvoiceModule($this);
         $this->ossInvoiceModule = new OssInvoiceModule($this);
+        $this->ossTaxRates = new OssTaxRates($this);
     }
 
     public function request(string $method, string $endpoint, array $options = []): array {
