@@ -239,7 +239,7 @@ class OssInvoiceModel
     }
 
     public function setServices(array $services): void {
-        $this->services = $services;
+        $this->services[] = $services;
     }
 
 
