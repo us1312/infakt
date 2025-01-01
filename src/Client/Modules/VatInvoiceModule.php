@@ -7,6 +7,7 @@ class VatInvoiceModule extends BaseModule
     CONST ENDPOINT = '/invoices';
     CONST ASYNC = '/async';
     CONST ENDPOINT_STATUS = '/status';
+    CONST ENDPOINT_PAID = '/paid';
     public function create(array $data): array {
         return $this->request('POST', self:: ASYNC .    self::ENDPOINT . '.json', ['json' => $data]);
     }
@@ -26,5 +27,9 @@ class VatInvoiceModule extends BaseModule
 
     public function checkStatus(string $id): array {
         return $this->request('GET', self::ASYNC . self::ENDPOINT . self::ENDPOINT_STATUS . "/{$id}.json");
+    }
+
+    public function markAsPaid(string $id, string $date): array {
+        return $this->request('POST', self::ASYNC . self::ENDPOINT  . "/{$id}" . self::ENDPOINT_PAID . ".json" . "?date={$date}");
     }
 }
