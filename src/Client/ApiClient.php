@@ -2,6 +2,7 @@
 
 namespace SCA\InFakt\Client;
 
+use SCA\InFakt\Client\Modules\CustomerModule;
 use SCA\InFakt\Client\Modules\OssInvoiceModule;
 use SCA\InFakt\Client\Modules\OssTaxRates;
 use SCA\InFakt\Client\Modules\VatInvoiceModule;
@@ -28,6 +29,7 @@ class ApiClient
         $this->vatInvoiceModule = new VatInvoiceModule($this);
         $this->ossInvoiceModule = new OssInvoiceModule($this);
         $this->ossTaxRates = new OssTaxRates($this);
+        $this->customerModule = new CustomerModule($this);
     }
 
     public function request(string $method, string $endpoint, array $options = []): array {
