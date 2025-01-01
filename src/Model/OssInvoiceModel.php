@@ -16,6 +16,7 @@ class OssInvoiceModel
     private ?string $clientStreet = null;
     private ?string $clientFlatNumber = null;
     private ?string $clientPostCode = null;
+    private ?string $clientCity = null;
     private ?string $serviceDate = null;
     private ?string $issueDate = null;
     private ?string $paymentDate = null;
@@ -104,6 +105,14 @@ class OssInvoiceModel
 
     public function setClientPostCode(string $clientPostCode): void {
         $this->clientPostCode = $clientPostCode;
+    }
+
+    public function getClientCity(): ?string {
+        return $this->clientCity;
+    }
+
+    public function setClientCity(?string $clientCity): void {
+        $this->clientCity = $clientCity;
     }
 
     public function getServiceDate(): string {
