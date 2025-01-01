@@ -4,14 +4,12 @@ namespace SCA\InFakt\Util;
 
 class ModelUtil
 {
-    private static function camelToSnake(string $input): string
-    {
+    private static function camelToSnake(string $input): string {
         return strtolower(preg_replace('/[A-Z]/', '_$0', $input));
     }
 
 
-    public static function getAll(object $object): array
-    {
+    public static function getAll(object $object): array {
         $reflection = new \ReflectionClass($object);
         $properties = $reflection->getProperties();
 
@@ -32,5 +30,26 @@ class ModelUtil
         }
 
         return $result;
+    }
+
+    public static function splitFullName(string $fullName): array {
+        $fullName = trim($fullName);
+
+        $parts = explode(' ', $fullName);
+
+        if (count($parts) === 1) {
+            return [
+                'firstName' => $parts[0],
+                'lastName' => ''
+            ];
+        }
+
+        $firstName = array_shift($parts);
+        $lastName = implode(' ', $parts);
+
+        return [
+            'firstName' => $firstName,
+            'lastName' => $lastName
+        ];
     }
 }
