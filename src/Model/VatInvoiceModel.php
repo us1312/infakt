@@ -499,6 +499,6 @@ class VatInvoiceModel
     }
 
     public function getAll($object): array {
-        return ModelUtil::getAll($object);
+        return ['invoice' => ModelUtil::getAll($object)];
     }
 }
