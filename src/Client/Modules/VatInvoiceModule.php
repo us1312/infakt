@@ -4,10 +4,11 @@ namespace SCA\InFakt\Client\Modules;
 
 class VatInvoiceModule extends BaseModule
 {
-    CONST ENDPOINT = '/vat_invoices.json';
+    CONST ENDPOINT = '/invoices';
     CONST ASYNC = '/async';
+    CONST ENDPOINT_STATUS = '/status';
     public function create(array $data): array {
-        return $this->request('POST', self:: ASYNC .    self::ENDPOINT, ['json' => $data]);
+        return $this->request('POST', self:: ASYNC .    self::ENDPOINT . '.json', ['json' => $data]);
     }
 
     public function read(int $id): array {
@@ -21,5 +22,9 @@ class VatInvoiceModule extends BaseModule
     public function delete(int $id): bool {
         $this->request('DELETE', self::ENDPOINT . "/{$id}");
         return true;
+    }
+
+    public function checkStatus(string $id): array {
+        return $this->request('GET', self::ASYNC . self::ENDPOINT . self::ENDPOINT_STATUS . "/{$id}");
     }
 }
