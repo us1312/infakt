@@ -25,7 +25,7 @@ class VatInvoiceModule extends BaseModule
         return true;
     }
 
-    public function checkStatus(string $id): array | string {
+    public function checkStatus(string $id): array {
         return $this->request('GET', self::ASYNC . self::ENDPOINT . self::ENDPOINT_STATUS . "/{$id}.json");
     }
 
@@ -33,7 +33,7 @@ class VatInvoiceModule extends BaseModule
         return $this->request('POST', self::ASYNC . self::ENDPOINT  . "/{$id}" . self::ENDPOINT_PAID . ".json" . "?date={$date}");
     }
     
-    public function downloadPdf(string $id): array {
+    public function downloadPdf(string $id): array | string {
         return $this->request('GET', self::ENDPOINT . "/{$id}/pdf.json?document_type=original");
     }
 }
