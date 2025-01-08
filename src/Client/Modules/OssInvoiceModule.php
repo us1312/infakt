@@ -22,4 +22,8 @@ class OssInvoiceModule extends BaseModule
         $this->request('DELETE', self::ENDPOINT . "/{$id}");
         return true;
     }
+
+    public function downloadPdf(string $id): array {
+        return $this->request('GET', self::ENDPOINT . "/{$id}/pdf.json?document_type=original");
+    }
 }
