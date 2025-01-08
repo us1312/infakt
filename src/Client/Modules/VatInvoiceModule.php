@@ -12,8 +12,8 @@ class VatInvoiceModule extends BaseModule
         return $this->request('POST', self:: ASYNC .    self::ENDPOINT . '.json', ['json' => $data]);
     }
 
-    public function read(int $id): array {
-        return $this->request('GET', self::ENDPOINT . "/{$id}");
+    public function read(string $id): array {
+        return $this->request('GET', self::ENDPOINT . "/{$id}.json");
     }
 
     public function update(int $id, array $data): array {
