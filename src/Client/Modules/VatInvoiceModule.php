@@ -32,4 +32,8 @@ class VatInvoiceModule extends BaseModule
     public function markAsPaid(string $id, string $date): array {
         return $this->request('POST', self::ASYNC . self::ENDPOINT  . "/{$id}" . self::ENDPOINT_PAID . ".json" . "?date={$date}");
     }
+    
+    public function downloadPdf(string $id): array {
+        return $this->request('GET', self::ENDPOINT . "/{$id}/pdf.json?document_type=original");
+    }
 }
