@@ -25,7 +25,7 @@ class VatInvoiceModule extends BaseModule
         return true;
     }
 
-    public function checkStatus(string $id): array {
+    public function checkStatus(string $id): array | string {
         return $this->request('GET', self::ASYNC . self::ENDPOINT . self::ENDPOINT_STATUS . "/{$id}.json");
     }
 

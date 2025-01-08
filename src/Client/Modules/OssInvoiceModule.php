@@ -23,7 +23,7 @@ class OssInvoiceModule extends BaseModule
         return true;
     }
 
-    public function downloadPdf(string $id): array {
+    public function downloadPdf(string $id): array | string {
         return $this->request('GET', self::ENDPOINT . "/{$id}/pdf.json?document_type=original");
     }
 }
