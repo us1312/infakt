@@ -32,7 +32,7 @@ class ApiClient
         $this->customerModule = new CustomerModule($this);
     }
 
-    public function request(string $method, string $endpoint, array $options = []): array {
+    public function request(string $method, string $endpoint, array $options = []): array | string {
         $options['headers'] = array_merge(
             $options['headers'] ?? [],
             $this->authenticator->getHeaders()
@@ -45,6 +45,12 @@ class ApiClient
             throw new \Exception('API request failed: ' . $response->getContent(false));
         }
 
-        return $response->toArray();
+        $contentType = $response->getHeaders(false)['content-type'][0] ?? '';
+
+        if (str_contains($contentType, 'application/json')) {
+            return $response->toArray();
+        }
+
+        return $response->getContent();
     }
 }
