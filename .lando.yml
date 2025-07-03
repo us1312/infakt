@@ -1,0 +1,21 @@
+name: infakt
+recipe: lamp
+config:
+  webroot: .
+  xdebug: true
+  php: 8.4
+services:
+  appserver:
+    config:
+      xdebug: 'develop, debug'
+      php: .lando/php.ini
+    overrides:
+      environment:
+        XDEBUG_MODE: 'develop, debug'
+        PHP_IDE_CONFIG: serverName=appserver
+tooling:
+  xdebug:
+    description: "Loads Xdebug in the selected mode"
+    cmd:
+      - appserver: /app/.lando/xdebug.sh
+    user: root
