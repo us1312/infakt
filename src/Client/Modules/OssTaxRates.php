@@ -6,6 +6,10 @@ class OssTaxRates extends BaseModule
 {
     const ENDPOINT = '/moss_vat_rates.json?limit=100&offset=0';
 
+    private array $countryEntities = [];
+
+    private array $metaInfo = [];
+
     public function getOssTaxRates(string $country): array
     {
         $endpoint = self::ENDPOINT;
@@ -13,15 +17,18 @@ class OssTaxRates extends BaseModule
         $processedCount = 0;
 
         do {
-            $response = $this->request('GET', $endpoint);
-
-            if (!isset($response['entities'], $response['metainfo']) || !is_array($response['entities'])) {
-                throw new \Exception('Invalid response from API.');
+            if (!$this->countryEntities) {
+                $response = $this->request('GET', $endpoint);
+                if (!isset($response['entities'], $response['metainfo']) || !is_array($response['entities'])) {
+                    throw new \Exception('Invalid response from API.');
+                }
+                $this->countryEntities = $response['entities'];
+                $this->metaInfo = $response['metainfo'];
             }
 
-            $processedCount += count($response['entities']);
+            $processedCount += count($this->countryEntities);
 
-            foreach ($response['entities'] as $rate) {
+            foreach ($this->countryEntities as $rate) {
                 if ($rate['country'] === $country && !$rate['reduced']) {
                     $allRates[] = $rate;
 
@@ -29,9 +36,9 @@ class OssTaxRates extends BaseModule
                 }
             }
 
-            $endpoint = $response['metainfo']['next'] ?? null;
+            $endpoint = $this->metaInfo['next'] ?? null;
 
-        } while ($endpoint && $processedCount < $response['metainfo']['total_count']);
+        } while ($endpoint && $processedCount < $this->metaInfo['total_count']);
 
         return $allRates;
     }

@@ -238,6 +238,19 @@ class CustomerModel
     }
 
     public function validateRequiredFields(): bool|array {
+    }
+
+    public function validate(): array
+    {
+        return ValidatorModel::validateModel($this);
+    }
+
+    public function validateAndThrow(): void
+    {
+        $errors = $this->validate();
+        if (!empty($errors)) {
+            throw new \SCA\InFakt\Exception\ValidationException($errors);
+        }
         return ValidatorModel::validateRequiredFields($this);
     }
 }
