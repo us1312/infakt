@@ -2,8 +2,7 @@
 
 namespace SCA\InFakt\Util;
 
-class Pagination
-{
+class Pagination {
     private int $currentPage;
     private int $perPage;
     private int $totalItems;
@@ -11,8 +10,7 @@ class Pagination
     private ?string $nextUrl;
     private ?string $prevUrl;
 
-    public function __construct(array $metainfo, int $currentPage = 1, int $perPage = 20)
-    {
+    public function __construct(array $metainfo, int $currentPage = 1, int $perPage = 20) {
         $this->currentPage = $currentPage;
         $this->perPage = $perPage;
         $this->totalItems = $metainfo['total_count'] ?? 0;
@@ -21,63 +19,51 @@ class Pagination
         $this->prevUrl = $metainfo['previous'] ?? null;
     }
 
-    public function getCurrentPage(): int
-    {
+    public function getCurrentPage(): int {
         return $this->currentPage;
     }
 
-    public function getPerPage(): int
-    {
+    public function getPerPage(): int {
         return $this->perPage;
     }
 
-    public function getTotalItems(): int
-    {
+    public function getTotalItems(): int {
         return $this->totalItems;
     }
 
-    public function getTotalPages(): int
-    {
+    public function getTotalPages(): int {
         return $this->totalPages;
     }
 
-    public function hasNextPage(): bool
-    {
+    public function hasNextPage(): bool {
         return $this->nextUrl !== null;
     }
 
-    public function hasPrevPage(): bool
-    {
+    public function hasPrevPage(): bool {
         return $this->prevUrl !== null;
     }
 
-    public function getNextUrl(): ?string
-    {
+    public function getNextUrl(): ?string {
         return $this->nextUrl;
     }
 
-    public function getPrevUrl(): ?string
-    {
+    public function getPrevUrl(): ?string {
         return $this->prevUrl;
     }
 
-    public function getOffset(): int
-    {
+    public function getOffset(): int {
         return ($this->currentPage - 1) * $this->perPage;
     }
 
-    public function isFirstPage(): bool
-    {
+    public function isFirstPage(): bool {
         return $this->currentPage === 1;
     }
 
-    public function isLastPage(): bool
-    {
+    public function isLastPage(): bool {
         return $this->currentPage === $this->totalPages;
     }
 
-    public function toArray(): array
-    {
+    public function toArray(): array {
         return [
             'current_page' => $this->currentPage,
             'per_page' => $this->perPage,
@@ -92,12 +78,12 @@ class Pagination
         ];
     }
 
-    public static function buildQueryParams(int $page = 1, int $limit = 20, array $additionalParams = []): array
-    {
+    public static function buildQueryParams(int $page = 1, int $limit = 20, array $additionalParams = []): array {
         $params = [
             'limit' => $limit,
             'offset' => ($page - 1) * $limit
         ];
+
         return array_merge($params, $additionalParams);
     }
 }

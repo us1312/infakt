@@ -1,11 +1,11 @@
 <?php
 
 namespace SCA\InFakt\Model;
+
 use SCA\InFakt\Util\ModelUtil;
 use SCA\InFakt\Util\ValidatorModel;
 
-class VatInvoiceModel
-{
+class VatInvoiceModel {
     public int $id; 
     public ?string $number = null;
     public ?string $currency = 'PLN';
@@ -494,13 +494,11 @@ class VatInvoiceModel
 
     public function validateRequiredFields(): bool|array {}
 
-    public function validate(): array
-    {
+    public function validate(): array {
         return ValidatorModel::validateModel($this);
     }
 
-    public function validateAndThrow(): void
-    {
+    public function validateAndThrow(): void {
         $errors = $this->validate();
         if (!empty($errors)) {
             throw new \SCA\InFakt\Exception\ValidationException($errors);

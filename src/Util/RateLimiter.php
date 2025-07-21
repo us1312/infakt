@@ -1,21 +1,22 @@
 <?php
+
 namespace SCA\InFakt\Util;
+
 use SCA\InFakt\Exception\RateLimitException;
-class RateLimiter
-{
+
+class RateLimiter {
     private array $requests = [];
     private int $maxRequests;
     private int $timeWindow;
     private int $minInterval;
-    public function __construct(int $maxRequests = 100, int $timeWindow = 3600, int $minInterval = 1)
-    {
+
+    public function __construct(int $maxRequests = 100, int $timeWindow = 3600, int $minInterval = 1) {
         $this->maxRequests = $maxRequests;
         $this->timeWindow = $timeWindow;
         $this->minInterval = $minInterval;
     }
     
-    public function checkLimit(): void
-    {
+    public function checkLimit(): void {
         $now = time();
         if (!empty($this->requests)) {
             $lastRequest = end($this->requests);
@@ -25,8 +26,8 @@ class RateLimiter
             }
         }
         $this->requests = array_filter($this->requests, function($timestamp) use ($now) {
-            return $now - $timestamp < $this->timeWindow;
-        });
+        return $now - $timestamp < $this->timeWindow;
+    });
         if (count($this->requests) >= $this->maxRequests) {
             $oldestRequest = min($this->requests);
             $waitTime = $this->timeWindow - ($now - $oldestRequest);
@@ -34,31 +35,29 @@ class RateLimiter
         }
     }
 
-    public function recordRequest(): void
-    {
+    public function recordRequest(): void {
         $this->requests[] = time();
     }
 
-    public function getRemainingRequests(): int
-    {
+    public function getRemainingRequests(): int {
         $now = time();
         $this->requests = array_filter($this->requests, function($timestamp) use ($now) {
-            return $now - $timestamp < $this->timeWindow;
-        });
+        return $now - $timestamp < $this->timeWindow;
+    });
+
         return max(0, $this->maxRequests - count($this->requests));
     }
 
-    public function getResetTime(): int
-    {
+    public function getResetTime(): int {
         if (empty($this->requests)) {
-            return time();
-        }
+        return time();
+    }
         $oldestRequest = min($this->requests);
+
         return $oldestRequest + $this->timeWindow;
     }
 
-    public function waitIfNeeded(): void
-    {
+    public function waitIfNeeded(): void {
         try {
             $this->checkLimit();
         } catch (RateLimitException $e) {
@@ -66,8 +65,7 @@ class RateLimiter
         }
     }
 
-    public function getStats(): array
-    {
+    public function getStats(): array {
         return [
             'max_requests' => $this->maxRequests,
             'time_window' => $this->timeWindow,

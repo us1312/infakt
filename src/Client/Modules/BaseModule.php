@@ -1,11 +1,12 @@
 <?php
 
 namespace SCA\InFakt\Client\Modules;
+
 use SCA\InFakt\Client\ApiClient;
 use SCA\InFakt\Util\Pagination;
 
-abstract class BaseModule
-{
+
+abstract class BaseModule {
     public function __construct(protected ApiClient $client) {}
 
     protected function buildQueryParametersArray(array $filters) {
@@ -30,8 +31,7 @@ abstract class BaseModule
         return $this->client->request($method, $endpoint, $options);
     }
 
-    protected function buildPaginatedRequest(string $endpoint, array $filters = [], int $page = 1, int $limit = 20): array
-    {
+    protected function buildPaginatedRequest(string $endpoint, array $filters = [], int $page = 1, int $limit = 20): array {
         $queryParams = Pagination::buildQueryParams($page, $limit, $filters);
         $query = !empty($queryParams) ? '?' . http_build_query($queryParams) : '';
         $response = $this->request('GET', $endpoint . '.json' . $query);
@@ -39,11 +39,11 @@ abstract class BaseModule
             $pagination = new Pagination($response['metainfo'], $page, $limit);
             $response['pagination'] = $pagination->toArray();
         }
+
         return $response;
     }
 
-    protected function getAllPages(string $endpoint, array $filters = [], int $limit = 100): array
-    {
+    protected function getAllPages(string $endpoint, array $filters = [], int $limit = 100): array {
         $allItems = [];
         $page = 1;
         do {

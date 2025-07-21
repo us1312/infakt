@@ -1,11 +1,11 @@
 <?php
 
 namespace SCA\InFakt\Model;
+
 use SCA\InFakt\Util\ModelUtil;
 use SCA\InFakt\Util\ValidatorModel;
 
-class OssInvoiceModel
-{
+class OssInvoiceModel {
     public ?int $id = null;
     public ?string $number = null;
     public string $country;
@@ -255,20 +255,18 @@ class OssInvoiceModel
         return ModelUtil::getAll($object);
     }
 
-    public function validateRequiredFields(): bool|array {
-    }
+    public function validateRequiredFields(): bool|array {}
 
-    public function validate(): array
-    {
+    public function validate(): array {
         return ValidatorModel::validateModel($this);
     }
 
-    public function validateAndThrow(): bool|array
-    {
+    public function validateAndThrow(): bool|array {
         $errors = $this->validate();
         if (!empty($errors)) {
             throw new \SCA\InFakt\Exception\ValidationException($errors);
         }
+
         return ValidatorModel::validateRequiredFields($this);
     }
 }

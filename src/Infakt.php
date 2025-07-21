@@ -1,10 +1,11 @@
 <?php
+
 namespace SCA\InFakt;
+
 use SCA\InFakt\Client\ApiClient;
-class Infakt
-{
-    public function __construct(private ApiClient $apiClient) {
-    }
+
+class Infakt {
+    public function __construct(private ApiClient $apiClient) {}
 
     public function getClient(): ApiClient {
         return $this->apiClient;

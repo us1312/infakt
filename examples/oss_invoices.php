@@ -1,13 +1,14 @@
 <?php
-require_once __DIR__ . '/../../.././../vendor/autoload.php';
+
 use SCA\InFakt\Client\ApiClient;
 use SCA\InFakt\Client\Authenticator;
 use SCA\InFakt\Model\OssInvoiceModel;
 use SCA\InFakt\Model\OssInvoiceProductModel;
-$apiKey = '454a4dca3a82308f478398aec8b24f65ec291202';
+
+require_once __DIR__ . '/../vendor/autoload.php';
+$apiKey = 'your-api-key-here';
 $sandbox = true;
 try {
-    xdebug_break();
     echo "=== InFakt API Client - Faktury OSS ===\n\n";
     $authenticator = new Authenticator($apiKey);
     $apiClient = new ApiClient($authenticator, $sandbox);

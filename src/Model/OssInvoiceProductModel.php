@@ -1,11 +1,11 @@
 <?php
 
 namespace SCA\InFakt\Model;
+
 use SCA\InFakt\Util\ModelUtil;
 use SCA\InFakt\Util\ValidatorModel;
 
-class OssInvoiceProductModel
-{
+class OssInvoiceProductModel {
     public ?int $additionalPrice = null;
     public ?string $flatRateTaxSymbol = null;
     public int $grossPrice;

@@ -2,14 +2,12 @@
 
 namespace SCA\InFakt\Client\Modules;
 
-class OssTaxRates extends BaseModule
-{
+class OssTaxRates extends BaseModule {
     const ENDPOINT = '/moss_vat_rates.json?limit=100&offset=0';
     private array $countryEntities = [];
     private array $metaInfo = [];
 
-    public function getOssTaxRates(string $country): array
-    {
+    public function getOssTaxRates(string $country): array {
         $endpoint = self::ENDPOINT;
         $allRates = [];
         $processedCount = 0;

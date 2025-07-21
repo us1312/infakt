@@ -1,13 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
 use SCA\InFakt\Client\ApiClient;
 use SCA\InFakt\Client\Authenticator;
-use SCA\InFakt\Util\RateLimiter;
 use SCA\InFakt\Exception\RateLimitException;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
+use SCA\InFakt\Util\RateLimiter;
 
+require_once __DIR__ . '/../vendor/autoload.php';
 $apiKey = 'your-api-key-here';
 $sandbox = true;
 
@@ -15,8 +13,7 @@ try {
     echo "=== InFakt API Client - Zaawansowane funkcje ===\n\n";
     echo "1. Konfiguracja z loggerem...\n";
 
-    $logger = new Logger('infakt');
-    $logger->pushHandler(new StreamHandler('php://stdout'));
+    $logger = new \Psr\Log\NullLogger('infakt');
 
     echo "2. Konfiguracja rate limitera...\n";
     $rateLimiter = new RateLimiter(
