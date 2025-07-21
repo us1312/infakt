@@ -1,7 +1,6 @@
 <?php
 
 namespace SCA\InFakt\Model;
-
 use SCA\InFakt\Util\ModelUtil;
 use SCA\InFakt\Util\ValidatorModel;
 
@@ -92,10 +91,8 @@ class OssInvoiceProductModel
     public function getAll($object): array {
         return ModelUtil::getAll($object);
     }
-
+    
     public function validateRequiredFields(): bool|array {
         return ValidatorModel::validateRequiredFields($this);
     }
-
-
 }

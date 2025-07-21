@@ -1,13 +1,12 @@
 <?php
 
 namespace SCA\InFakt\Model;
-
 use SCA\InFakt\Util\ModelUtil;
 use SCA\InFakt\Util\ValidatorModel;
 
 class VatInvoiceModel
 {
-    public int $id; // Read-only
+    public int $id; 
     public ?string $number = null;
     public ?string $currency = 'PLN';
     public ?int $paidPrice = null;
@@ -38,7 +37,7 @@ class VatInvoiceModel
     public ?string $clientCity = null;
     public ?string $clientPostCode = null;
     public ?string $clientTaxCode = null;
-    public ?string $cleanClientNip = null; // Read-only
+    public ?string $cleanClientNip = null; 
     public ?string $clientCountry = null;
     public ?bool $checkDuplicateNumber = null;
     public ?string $bankName = null;
@@ -50,16 +49,16 @@ class VatInvoiceModel
     public ?string $continuousServiceEndOn = null;
     public array $services;
     public ?int $vatExemptionReason = null;
-    public ?array $extensions = null; // Read-only
+    public ?array $extensions = null; 
     public ?string $bdoCode = null;
     public ?int $transactionKindId = null;
     public ?array $documentMarkingsIds = null;
     public ?string $receiptNumber = null;
     public ?bool $notIncome = null;
     public ?string $vatExchangeDateKind = null;
-    public ?array $ksefData = null; // Read-only
+    public ?array $ksefData = null; 
     public ?array $localGovernmentRecipientAddress = null;
-    public ?array $localGovernmentSellerAddress = null; // Read-only
+    public ?array $localGovernmentSellerAddress = null; 
     public ?string $createdAt = null;
 
     public function getId(): int {
@@ -105,7 +104,6 @@ class VatInvoiceModel
     public function getKind(): ?string {
         return $this->kind;
     }
-
     public function setKind(?string $kind): void {
         $this->kind = $kind;
     }
@@ -494,8 +492,20 @@ class VatInvoiceModel
         $this->createdAt = $createdAt;
     }
 
-    public function validateRequiredFields(): bool|array {
-        return ValidatorModel::validateRequiredFields($this);
+    public function validateRequiredFields(): bool|array {}
+
+    public function validate(): array
+    {
+        return ValidatorModel::validateModel($this);
+    }
+
+    public function validateAndThrow(): void
+    {
+        $errors = $this->validate();
+        if (!empty($errors)) {
+            throw new \SCA\InFakt\Exception\ValidationException($errors);
+        }
+        ValidatorModel::validateRequiredFields($this);
     }
 
     public function getAll($object): array {

@@ -1,39 +1,38 @@
 <?php
 
 namespace SCA\InFakt\Model;
-
 use SCA\InFakt\Util\ModelUtil;
 use SCA\InFakt\Util\ValidatorModel;
 
 class OssInvoiceModel
 {
-    private ?int $id = null;
-    private ?string $number = null;
-    private string $country;
-    private ?string $clientEmail = null;
-    private string $clientFirstName;
-    private string $clientLastName;
-    private ?string $clientStreet = null;
-    private ?string $clientFlatNumber = null;
-    private ?string $clientPostCode = null;
-    private ?string $clientCity = null;
-    private ?string $serviceDate = null;
-    private ?string $issueDate = null;
-    private ?string $paymentDate = null;
-    private ?int $advancePrice = null;
-    private ?string $serviceType;
-    private string $saleType;
-    private string $servicePlacePrimary;
-    private ?string $servicePlaceSecondary = null;
-    private string $currency;
-    private ?string $recipientSignature = null;
-    private ?string $sellerSignature = null;
-    private ?string $notes = null;
-    private ?int $netPrice = null;
-    private ?int $taxPrice = null;
-    private ?int $grossPrice = null;
-    private ?bool $checkDuplicateNumber = null;
-    private array $services = [];
+    public ?int $id = null;
+    public ?string $number = null;
+    public string $country;
+    public ?string $clientEmail = null;
+    public string $clientFirstName;
+    public string $clientLastName;
+    public ?string $clientStreet = null;
+    public ?string $clientFlatNumber = null;
+    public ?string $clientPostCode = null;
+    public ?string $clientCity = null;
+    public ?string $serviceDate = null;
+    public ?string $issueDate = null;
+    public ?string $paymentDate = null;
+    public ?int $advancePrice = null;
+    public ?string $serviceType;
+    public string $saleType;
+    public string $servicePlacePrimary;
+    public ?string $servicePlaceSecondary = null;
+    public string $currency;
+    public ?string $recipientSignature = null;
+    public ?string $sellerSignature = null;
+    public ?string $notes = null;
+    public ?int $netPrice = null;
+    public ?int $taxPrice = null;
+    public ?int $grossPrice = null;
+    public ?bool $checkDuplicateNumber = null;
+    public array $services = [];
 
     public function getId(): ?int {
         return $this->id;
@@ -54,6 +53,7 @@ class OssInvoiceModel
     public function getCountry(): string {
         return $this->country;
     }
+
 
     public function setCountry(string $country): void {
         $this->country = $country;
@@ -251,12 +251,24 @@ class OssInvoiceModel
         $this->services[] = $services;
     }
 
-
     public function getAll($object): array {
         return ModelUtil::getAll($object);
     }
 
     public function validateRequiredFields(): bool|array {
+    }
+
+    public function validate(): array
+    {
+        return ValidatorModel::validateModel($this);
+    }
+
+    public function validateAndThrow(): bool|array
+    {
+        $errors = $this->validate();
+        if (!empty($errors)) {
+            throw new \SCA\InFakt\Exception\ValidationException($errors);
+        }
         return ValidatorModel::validateRequiredFields($this);
     }
 }

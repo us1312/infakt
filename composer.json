@@ -20,12 +20,6 @@
       "SCA\\InFakt\\": "src/"
     }
   },
-  "repositories": [
-    {
-      "type": "git",
-      "url": "https://github.com/us1312/infakt.git"
-    }
-  ],
   "minimum-stability": "stable",
   "prefer-stable": true
 }

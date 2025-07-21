@@ -1,7 +1,6 @@
 <?php
 
 namespace SCA\InFakt\Model;
-
 use SCA\InFakt\Util\ModelUtil;
 use SCA\InFakt\Util\ValidatorModel;
 
@@ -29,8 +28,8 @@ class VatInvoiceProductModel
 
     public function getId(): ?int {
         return $this->id;
-    }
 
+    }
     public function setId(?int $id): void {
         $this->id = $id;
     }
@@ -179,7 +178,6 @@ class VatInvoiceProductModel
         $this->gtuId = $gtuId;
     }
 
-
     public function getAll($object): array {
         return ModelUtil::getAll($object);
     }
@@ -187,4 +185,5 @@ class VatInvoiceProductModel
     public function validateRequiredFields(): bool|array {
         return ValidatorModel::validateRequiredFields($this);
     }
+
 }
