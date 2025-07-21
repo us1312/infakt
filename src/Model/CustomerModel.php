@@ -5,8 +5,7 @@ namespace SCA\InFakt\Model;
 use SCA\InFakt\Util\ModelUtil;
 use SCA\InFakt\Util\ValidatorModel;
 
-class CustomerModel
-{
+class CustomerModel {
     public ?string $companyName = null;
     public ?string $street = null;
     public ?string $streetNumber = null;
@@ -237,16 +236,13 @@ class CustomerModel
         return ModelUtil::getAll($object);
     }
 
-    public function validateRequiredFields(): bool|array {
-    }
+    public function validateRequiredFields(): bool|array {}
 
-    public function validate(): array
-    {
+    public function validate(): array {
         return ValidatorModel::validateModel($this);
     }
 
-    public function validateAndThrow(): void
-    {
+    public function validateAndThrow(): void {
         $errors = $this->validate();
         if (!empty($errors)) {
             throw new \SCA\InFakt\Exception\ValidationException($errors);

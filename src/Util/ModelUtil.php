@@ -1,9 +1,9 @@
 <?php
 
 namespace SCA\InFakt\Util;
-class ModelUtil
 
-{
+class ModelUtil
+ {
     private static function camelToSnake(string $input): string {
         return strtolower(preg_replace('/[A-Z]/', '_$0', $input));
     }
@@ -22,6 +22,7 @@ class ModelUtil
                 }
             }
         }
+
         return $result;
     }
 
@@ -29,13 +30,14 @@ class ModelUtil
         $fullName = trim($fullName);
         $parts = explode(' ', $fullName);
         if (count($parts) === 1) {
-            return [
+        return [
                 'firstName' => $parts[0],
                 'lastName' => ''
             ];
-        }
+    }
         $firstName = array_shift($parts);
         $lastName = implode(' ', $parts);
+
         return [
             'firstName' => $firstName,
             'lastName' => $lastName

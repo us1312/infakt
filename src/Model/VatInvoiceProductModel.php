@@ -1,11 +1,11 @@
 <?php
 
 namespace SCA\InFakt\Model;
+
 use SCA\InFakt\Util\ModelUtil;
 use SCA\InFakt\Util\ValidatorModel;
 
-class VatInvoiceProductModel
-{
+class VatInvoiceProductModel {
     public ?int $id = null;
     public string $name;
     public ?string $symbol = null;

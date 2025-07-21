@@ -1,13 +1,10 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
 
-use SCA\InFakt\Infakt;
 use SCA\InFakt\Client\ApiClient;
 use SCA\InFakt\Client\Authenticator;
-use SCA\InFakt\Model\CustomerModel;
-use SCA\InFakt\Model\VatInvoiceModel;
-use SCA\InFakt\Exception\ApiException;
-use SCA\InFakt\Exception\ValidationException;
+use SCA\InFakt\Infakt;
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $apiKey = 'your-api-key-here';
 $sandbox = true;

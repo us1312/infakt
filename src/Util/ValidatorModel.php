@@ -1,11 +1,12 @@
 <?php
-namespace SCA\InFakt\Util;
-use SCA\InFakt\Exception\ValidationException;
-class ValidatorModel
 
-{
-    public static function validateRequiredFields(object $object): bool|array
-    {
+namespace SCA\InFakt\Util;
+
+use SCA\InFakt\Exception\ValidationException;
+
+class ValidatorModel
+ {
+    public static function validateRequiredFields(object $object): bool|array {
         $reflection = new \ReflectionClass($object);
         $properties = $reflection->getProperties();
         $missingFields = [];
@@ -23,24 +24,22 @@ class ValidatorModel
                 }
             }
         }
+
         return empty($missingFields) ? true : $missingFields;
     }
 
-    public static function validateAndThrow(object $object): void
-    {
+    public static function validateAndThrow(object $object): void {
         $result = self::validateRequiredFields($object);
         if (is_array($result)) {
             throw new ValidationException($result, 'Missing required fields: ' . implode(', ', $result));
         }
     }
 
-    public static function validateEmail(string $email): bool
-    {
+    public static function validateEmail(string $email): bool {
         return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
     }
 
-    public static function validateNip(string $nip): bool
-    {
+    public static function validateNip(string $nip): bool {
         $nip = preg_replace('/[^0-9]/', '', $nip);
         if (strlen($nip) !== 10) {
             return false;
@@ -54,11 +53,11 @@ class ValidatorModel
         if ($checksum === 10) {
             return false;
         }
+
         return $checksum == $nip[9];
     }
 
-    public static function validatePostalCode(string $postalCode, string $country = 'PL'): bool
-    {
+    public static function validatePostalCode(string $postalCode, string $country = 'PL'): bool {
         switch (strtoupper($country)) {
             case 'PL':
                 return preg_match('/^\d{2}-\d{3}$/', $postalCode);
@@ -71,30 +70,29 @@ class ValidatorModel
         }
     }
 
-    public static function validateCurrency(string $currency): bool
-    {
+    public static function validateCurrency(string $currency): bool {
         $allowedCurrencies = ['PLN', 'EUR', 'USD', 'GBP', 'CHF', 'CZK', 'SEK', 'NOK', 'DKK'];
+
         return in_array(strtoupper($currency), $allowedCurrencies);
     }
 
-    public static function validateCountryCode(string $countryCode): bool
-    {
+    public static function validateCountryCode(string $countryCode): bool {
         $allowedCountries = [
             'PL', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'AT', 'CZ', 'SK', 
             'HU', 'SI', 'HR', 'BG', 'RO', 'LT', 'LV', 'EE', 'FI', 'SE', 
             'DK', 'IE', 'PT', 'GR', 'CY', 'MT', 'LU', 'US', 'GB', 'CH', 'NO'
         ];
+
         return in_array(strtoupper($countryCode), $allowedCountries);
     }
 
-    public static function validateDate(string $date, string $format = 'Y-m-d'): bool
-    {
+    public static function validateDate(string $date, string $format = 'Y-m-d'): bool {
         $dateTime = \DateTime::createFromFormat($format, $date);
+
         return $dateTime && $dateTime->format($format) === $date;
     }
 
-    public static function validateModel(object $model): array
-    {
+    public static function validateModel(object $model): array {
         $errors = [];
         $reflection = new \ReflectionClass($model);
         $requiredFieldsResult = self::validateRequiredFields($model);
@@ -113,11 +111,11 @@ class ValidatorModel
                 $errors = array_merge($errors, self::validateOssInvoiceModel($model));
                 break;
         }
+
         return $errors;
     }
 
-    private static function validateCustomerModel($model): array
-    {
+    private static function validateCustomerModel($model): array {
         $errors = [];
         if (!empty($model->email) && !self::validateEmail($model->email)) {
             $errors['email'] = 'Invalid email format';
@@ -131,11 +129,11 @@ class ValidatorModel
         if (!self::validateCountryCode($model->country)) {
             $errors['country'] = 'Invalid country code';
         }
+
         return $errors;
     }
 
-    private static function validateVatInvoiceModel($model): array
-    {
+    private static function validateVatInvoiceModel($model): array {
         $errors = [];
         if (!empty($model->currency) && !self::validateCurrency($model->currency)) {
             $errors['currency'] = 'Invalid currency code';
@@ -146,11 +144,11 @@ class ValidatorModel
         if (!empty($model->saleDate) && !self::validateDate($model->saleDate)) {
             $errors['saleDate'] = 'Invalid sale date format';
         }
+
         return $errors;
     }
     
-    private static function validateOssInvoiceModel($model): array
-    {
+    private static function validateOssInvoiceModel($model): array {
         $errors = [];
         if (!self::validateCountryCode($model->country)) {
             $errors['country'] = 'Invalid country code';
@@ -161,6 +159,7 @@ class ValidatorModel
         if (!empty($model->currency) && !self::validateCurrency($model->currency)) {
             $errors['currency'] = 'Invalid currency code';
         }
+
         return $errors;
     }
 }

@@ -1,9 +1,9 @@
 <?php
+
 namespace SCA\InFakt\Client;
-class Authenticator
-{
-    public function __construct(private string $apiKey) {
-    }
+
+class Authenticator {
+    public function __construct(private string $apiKey) {}
     public function getHeaders(): array {
         return [
             'X-inFakt-ApiKey' => $this->apiKey,

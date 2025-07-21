@@ -1,6 +1,7 @@
 <?php
 
 namespace SCA\InFakt\Client;
+
 use SCA\InFakt\Client\Modules\CustomerModule;
 use SCA\InFakt\Client\Modules\OssInvoiceModule;
 use SCA\InFakt\Client\Modules\OssTaxRates;
@@ -13,9 +14,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
-class ApiClient
 
-{
+class ApiClient
+ {
     public VatInvoiceModule $vatInvoiceModule;
     public OssInvoiceModule $ossInvoiceModule;
     public OssTaxRates $ossTaxRates;
@@ -45,8 +46,7 @@ class ApiClient
         $this->customerModule = new CustomerModule($this);
     }
 
-    public function request(string $method, string $endpoint, array $options = []): array|string
-    {
+    public function request(string $method, string $endpoint, array $options = []): array|string {
         $this->checkRateLimit();
         $options['headers'] = array_merge(
             $options['headers'] ?? [],
@@ -86,8 +86,7 @@ class ApiClient
         }
     }
 
-    private function checkRateLimit(): void
-    {
+    private function checkRateLimit(): void {
         $this->rateLimiter->checkLimit();
         if (isset($this->rateLimitState['retry_after']) && 
             time() < $this->rateLimitState['retry_after']) {
@@ -98,8 +97,7 @@ class ApiClient
         $this->rateLimiter->recordRequest();
     }
 
-    private function updateRateLimitState($response): void
-    {
+    private function updateRateLimitState($response): void {
         $headers = $response->getHeaders(false);
         if (isset($headers['x-ratelimit-remaining'])) {
             $this->rateLimitState['remaining'] = (int)$headers['x-ratelimit-remaining'][0];
@@ -109,8 +107,7 @@ class ApiClient
             $this->rateLimitState['reset'] = (int)$headers['x-ratelimit-reset'][0];
         }
     }
-    private function handleErrorResponse($response, int $statusCode): void
-    {
+    private function handleErrorResponse($response, int $statusCode): void {
         $content = $response->getContent(false);
         $data = [];
         if (json_validate($content)) {
@@ -135,15 +132,13 @@ class ApiClient
         }
     }
 
-    private function log(string $level, string $message, array $context = []): void
-    {
+    private function log(string $level, string $message, array $context = []): void {
         if ($this->logger) {
             $this->logger->log($level, $message, $context);
         }
     }
 
-    public function getRateLimitState(): array
-    {
+    public function getRateLimitState(): array {
         $serverState = $this->rateLimitState;
         $localState = $this->rateLimiter->getStats();
 
@@ -152,8 +147,7 @@ class ApiClient
         ]);
     }
 
-    public function getRateLimiter(): RateLimiter
-    {
+    public function getRateLimiter(): RateLimiter {
         return $this->rateLimiter;
     }
 }
