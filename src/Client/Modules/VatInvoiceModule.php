@@ -8,7 +8,6 @@ class VatInvoiceModule extends BaseModule
     const ASYNC = '/async';
     const ENDPOINT_STATUS = '/status';
     const ENDPOINT_PAID = '/paid';
-
     public function create(array $data): array
     {
         return $this->request('POST', self::ASYNC . self::ENDPOINT . '.json', ['json' => $data]);
@@ -48,35 +47,30 @@ class VatInvoiceModule extends BaseModule
     public function list(array $filters = [], int $page = 1, int $limit = 20): array
     {
         $cleanFilters = $this->buildQueryParametersArray($filters);
-        
         return $this->buildPaginatedRequest(self::ENDPOINT, $cleanFilters, $page, $limit);
     }
 
     public function search(array $search, int $page = 1, int $limit = 20): array
     {
         $cleanFilters = $this->buildQueryParametersArray($search);
-
         return $this->list($cleanFilters, $page, $limit);
     }
 
     public function findByNumber(string $number, int $page = 1, int $limit = 20): array
     {
         $cleanFilters = $this->buildQueryParametersArray(['number' => ['modifier' => 'eq', 'value' => $number]]);
-
         return $this->search($cleanFilters, $page, $limit);
     }
 
     public function findByClient(int $clientId, int $page = 1, int $limit = 20): array
     {
         $cleanFilters = $this->buildQueryParametersArray(['client_id' => ['modifier' => 'eq', 'value' => $clientId]]);
-
         return $this->list($cleanFilters, $page, $limit);
     }
 
     public function findByStatus(string $status, int $page = 1, int $limit = 20): array
     {
         $cleanFilters = $this->buildQueryParametersArray(['status' => ['modifier' => 'eq', 'value' => $status]]);
-
         return $this->list($cleanFilters, $page, $limit);
     }
 
@@ -86,7 +80,6 @@ class VatInvoiceModule extends BaseModule
             'invoice_date_from' => ['modifier' => 'gte', 'value' => $dateFrom],
             'invoice_date_to' => ['modifier' => 'lte', 'value' => $dateTo]
         ]);
-
         return $this->list($cleanFilters, $page, $limit);
     }
 

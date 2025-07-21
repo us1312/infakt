@@ -12,12 +12,12 @@ class CustomerModel
     public ?string $streetNumber = null;
     public ?string $flatNumber = null;
     public ?string $city = null;
-    public string $country; // Required
+    public string $country; 
     public ?string $postalCode = null;
     public ?string $nip = null;
-    public ?string $cleanNip = null; // For searching only
+    public ?string $cleanNip = null; 
     public ?string $phoneNumber = null;
-    public ?bool $sameForwardAddress = true; // Default true
+    public ?bool $sameForwardAddress = true; 
     public ?string $webSite = null;
     public ?string $email = null;
     public ?string $note = null;
@@ -28,9 +28,9 @@ class CustomerModel
     public ?string $mailingPostalCode = null;
     public ?int $daysToPayment = null;
     public ?string $invoiceNote = null;
-    public ?string $paymentMethod = null; // Valid values as per the list
-    public ?string $firstName = null; // Required for private_person or JDG
-    public ?string $lastName = null; // Required for private_person or JDG
+    public ?string $paymentMethod = null; 
+    public ?string $firstName = null; 
+    public ?string $lastName = null; 
     public ?string $businessActivityKind = null;
 
     public function getCompanyName(): ?string {
@@ -251,6 +251,6 @@ class CustomerModel
         if (!empty($errors)) {
             throw new \SCA\InFakt\Exception\ValidationException($errors);
         }
-        return ValidatorModel::validateRequiredFields($this);
+        ValidatorModel::validateRequiredFields($this);
     }
 }

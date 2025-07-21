@@ -5,9 +5,7 @@ namespace SCA\InFakt\Client\Modules;
 class OssTaxRates extends BaseModule
 {
     const ENDPOINT = '/moss_vat_rates.json?limit=100&offset=0';
-
     private array $countryEntities = [];
-
     private array $metaInfo = [];
 
     public function getOssTaxRates(string $country): array
@@ -15,7 +13,6 @@ class OssTaxRates extends BaseModule
         $endpoint = self::ENDPOINT;
         $allRates = [];
         $processedCount = 0;
-
         do {
             if (!$this->countryEntities) {
                 $response = $this->request('GET', $endpoint);
@@ -25,19 +22,14 @@ class OssTaxRates extends BaseModule
                 $this->countryEntities = $response['entities'];
                 $this->metaInfo = $response['metainfo'];
             }
-
             $processedCount += count($this->countryEntities);
-
             foreach ($this->countryEntities as $rate) {
                 if ($rate['country'] === $country && !$rate['reduced']) {
                     $allRates[] = $rate;
-
                     break 2;
                 }
             }
-
             $endpoint = $this->metaInfo['next'] ?? null;
-
         } while ($endpoint && $processedCount < $this->metaInfo['total_count']);
 
         return $allRates;

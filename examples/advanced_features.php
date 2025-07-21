@@ -1,7 +1,6 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-
 use SCA\InFakt\Client\ApiClient;
 use SCA\InFakt\Client\Authenticator;
 use SCA\InFakt\Util\RateLimiter;
@@ -9,27 +8,22 @@ use SCA\InFakt\Exception\RateLimitException;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-// Konfiguracja zaawansowana
 $apiKey = 'your-api-key-here';
 $sandbox = true;
 
 try {
     echo "=== InFakt API Client - Zaawansowane funkcje ===\n\n";
-
-    // 1. Konfiguracja z loggerem
     echo "1. Konfiguracja z loggerem...\n";
-    $logger = new Logger('infakt');
-    $logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
 
-    // 2. Własny rate limiter (bardziej restrykcyjny)
+    $logger = new Logger('infakt');
+    $logger->pushHandler(new StreamHandler('php://stdout'));
+
     echo "2. Konfiguracja rate limitera...\n";
     $rateLimiter = new RateLimiter(
-        maxRequests: 50,    // max 50 requestów
-        timeWindow: 3600,   // w ciągu godziny
-        minInterval: 2      // minimum 2 sekundy między requestami
+        maxRequests: 50,    
+        timeWindow: 3600,   
+        minInterval: 2      
     );
-
-    // 3. Inicjalizacja z zaawansowaną konfiguracją
     $authenticator = new Authenticator($apiKey);
     $apiClient = new ApiClient(
         authenticator: $authenticator,
@@ -40,77 +34,63 @@ try {
     );
 
     echo "Klient skonfigurowany z loggerem i rate limiterem\n\n";
-
-    // 4. Demonstracja rate limitingu
     echo "3. Test rate limitingu...\n";
     for ($i = 1; $i <= 3; $i++) {
         try {
-            echo "Request #{$i}... ";
+            echo "Request $i: ";
             $customers = $apiClient->customerModule->list([], 1, 1);
             echo "OK\n";
-            
-            // Sprawdź stan rate limitera
             $stats = $apiClient->getRateLimiter()->getStats();
             echo "  Pozostałe requesty: {$stats['remaining_requests']}\n";
-            
         } catch (RateLimitException $e) {
             echo "Rate limit! Czekam {$e->getRetryAfter()} sekund...\n";
             sleep($e->getRetryAfter());
-            $i--; // Spróbuj ponownie
+            $i--; 
         }
     }
 
-    // 5. Pobieranie wszystkich stron (bez limitów paginacji)
     echo "\n4. Pobieranie wszystkich klientów (wszystkie strony)...\n";
-    $allCustomers = $apiClient->customerModule->getAllCustomers();
-    echo "Pobrano łącznie " . count($allCustomers) . " klientów ze wszystkich stron\n";
 
-    // 6. Zaawansowane filtrowanie faktur
+    $allCustomers = $apiClient->customerModule->getAllCustomers();
+
+    echo "Pobrano łącznie " . count($allCustomers) . " klientów ze wszystkich stron\n";
     echo "\n5. Zaawansowane filtrowanie faktur...\n";
+
     $invoices = $apiClient->vatInvoiceModule->findByDateRange(
-        dateFrom: date('Y-m-01', strtotime('-1 month')), // poprzedni miesiąc
+        dateFrom: date('Y-m-01', strtotime('-1 month')), 
         dateTo: date('Y-m-t', strtotime('-1 month')),
         page: 1,
         limit: 50
     );
-    
-    echo "Faktury z poprzedniego miesiąca: " . count($invoices['entities'] ?? []) . "\n";
 
-    // 7. Obsługa błędów z retry
+    echo "Faktury z poprzedniego miesiąca: " . count($invoices['entities'] ?? []) . "\n";
     echo "\n6. Demonstracja retry przy błędach...\n";
     $maxRetries = 3;
     $retryCount = 0;
-    
+
     while ($retryCount < $maxRetries) {
         try {
-            // Próba pobrania nieistniejącej faktury
             $invoice = $apiClient->vatInvoiceModule->read('999999');
-            break; // Sukces
-            
+            break; 
         } catch (\SCA\InFakt\Exception\ApiException $e) {
             $retryCount++;
-            echo "Próba #{$retryCount} nieudana: {$e->getMessage()}\n";
-            
+            echo "Próba $retryCount nieudana: " . $e->getMessage() . "\n";
             if ($retryCount >= $maxRetries) {
                 echo "Przekroczono maksymalną liczbę prób\n";
                 break;
             }
-            
-            // Exponential backoff
             $waitTime = pow(2, $retryCount);
             echo "Czekam {$waitTime} sekund przed kolejną próbą...\n";
             sleep($waitTime);
         }
     }
 
-    // 8. Walidacja danych przed wysłaniem
     echo "\n7. Walidacja danych przed wysłaniem...\n";
     $customer = new \SCA\InFakt\Model\CustomerModel();
     $customer->companyName = 'Test Company';
-    $customer->country = 'INVALID'; // Nieprawidłowy kod kraju
-    $customer->email = 'invalid-email'; // Nieprawidłowy email
-    $customer->nip = '123'; // Nieprawidłowy NIP
-
+    $customer->country = 'INVALID'; 
+    $customer->email = 'invalid-email'; 
+    $customer->nip = '123'; 
     $errors = $customer->validate();
     if (!empty($errors)) {
         echo "Znalezione błędy walidacji:\n";
@@ -118,28 +98,19 @@ try {
             echo "  {$field}: {$error}\n";
         }
     }
-
-    // 9. Monitoring wydajności
     echo "\n8. Monitoring wydajności...\n";
     $startTime = microtime(true);
-    
     $customers = $apiClient->customerModule->list([], 1, 10);
-    
     $endTime = microtime(true);
-    $duration = ($endTime - $startTime) * 1000; // w milisekundach
-    
+    $duration = ($endTime - $startTime) * 1000; 
     echo "Czas wykonania requestu: " . round($duration, 2) . " ms\n";
-
-    // 10. Stan rate limitera na koniec
     echo "\n9. Końcowy stan rate limitera:\n";
     $finalStats = $apiClient->getRateLimiter()->getStats();
     echo "Wykonane requesty: {$finalStats['current_requests']}\n";
     echo "Pozostałe requesty: {$finalStats['remaining_requests']}\n";
     echo "Reset za: " . ($finalStats['reset_time'] - time()) . " sekund\n";
-
 } catch (Exception $e) {
     echo "Błąd: " . $e->getMessage() . "\n";
     echo "Typ: " . get_class($e) . "\n";
 }
-
 echo "\n=== Koniec przykładu zaawansowanego ===\n";

@@ -1,37 +1,28 @@
 <?php
-
 namespace SCA\InFakt\Util;
-
 use SCA\InFakt\Exception\ValidationException;
-
 class ValidatorModel
+
 {
     public static function validateRequiredFields(object $object): bool|array
     {
         $reflection = new \ReflectionClass($object);
         $properties = $reflection->getProperties();
-
         $missingFields = [];
-
         foreach ($properties as $property) {
             $type = $property->getType();
-
             if ($type && !$type->allowsNull()) {
                 $property->setAccessible(true);
-
                 if (!$property->isInitialized($object)) {
                     $missingFields[] = $property->getName();
                     continue;
                 }
-
                 $value = $property->getValue($object);
-
                 if (empty($value)) {
                     $missingFields[] = $property->getName();
                 }
             }
         }
-
         return empty($missingFields) ? true : $missingFields;
     }
 
@@ -51,24 +42,18 @@ class ValidatorModel
     public static function validateNip(string $nip): bool
     {
         $nip = preg_replace('/[^0-9]/', '', $nip);
-        
         if (strlen($nip) !== 10) {
             return false;
         }
-
         $weights = [6, 5, 7, 2, 3, 4, 5, 6, 7];
         $sum = 0;
-
         for ($i = 0; $i < 9; $i++) {
             $sum += $nip[$i] * $weights[$i];
         }
-
         $checksum = $sum % 11;
-        
         if ($checksum === 10) {
             return false;
         }
-
         return $checksum == $nip[9];
     }
 
@@ -112,16 +97,11 @@ class ValidatorModel
     {
         $errors = [];
         $reflection = new \ReflectionClass($model);
-        
-        // Sprawdź wymagane pola
         $requiredFieldsResult = self::validateRequiredFields($model);
         if (is_array($requiredFieldsResult)) {
             $errors['required_fields'] = $requiredFieldsResult;
         }
-
-        // Sprawdź specyficzne walidacje dla różnych modeli
         $className = $reflection->getShortName();
-        
         switch ($className) {
             case 'CustomerModel':
                 $errors = array_merge($errors, self::validateCustomerModel($model));
@@ -133,68 +113,54 @@ class ValidatorModel
                 $errors = array_merge($errors, self::validateOssInvoiceModel($model));
                 break;
         }
-
         return $errors;
     }
 
     private static function validateCustomerModel($model): array
     {
         $errors = [];
-        
         if (!empty($model->email) && !self::validateEmail($model->email)) {
             $errors['email'] = 'Invalid email format';
         }
-        
         if (!empty($model->nip) && !self::validateNip($model->nip)) {
             $errors['nip'] = 'Invalid NIP format';
         }
-        
         if (!empty($model->postalCode) && !self::validatePostalCode($model->postalCode, $model->country ?? 'PL')) {
             $errors['postalCode'] = 'Invalid postal code format';
         }
-        
         if (!self::validateCountryCode($model->country)) {
             $errors['country'] = 'Invalid country code';
         }
-
         return $errors;
     }
 
     private static function validateVatInvoiceModel($model): array
     {
         $errors = [];
-        
         if (!empty($model->currency) && !self::validateCurrency($model->currency)) {
             $errors['currency'] = 'Invalid currency code';
         }
-        
         if (!empty($model->invoiceDate) && !self::validateDate($model->invoiceDate)) {
             $errors['invoiceDate'] = 'Invalid invoice date format';
         }
-        
         if (!empty($model->saleDate) && !self::validateDate($model->saleDate)) {
             $errors['saleDate'] = 'Invalid sale date format';
         }
-
         return $errors;
     }
-
+    
     private static function validateOssInvoiceModel($model): array
     {
         $errors = [];
-        
         if (!self::validateCountryCode($model->country)) {
             $errors['country'] = 'Invalid country code';
         }
-        
         if (!empty($model->clientEmail) && !self::validateEmail($model->clientEmail)) {
             $errors['clientEmail'] = 'Invalid email format';
         }
-        
         if (!empty($model->currency) && !self::validateCurrency($model->currency)) {
             $errors['currency'] = 'Invalid currency code';
         }
-
         return $errors;
     }
 }

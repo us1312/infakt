@@ -1,28 +1,22 @@
 <?php
-
 namespace SCA\InFakt\Util;
-
 use SCA\InFakt\Exception\RateLimitException;
-
 class RateLimiter
 {
     private array $requests = [];
     private int $maxRequests;
     private int $timeWindow;
     private int $minInterval;
-
     public function __construct(int $maxRequests = 100, int $timeWindow = 3600, int $minInterval = 1)
     {
         $this->maxRequests = $maxRequests;
         $this->timeWindow = $timeWindow;
         $this->minInterval = $minInterval;
     }
-
+    
     public function checkLimit(): void
     {
         $now = time();
-        
-        // Sprawdź minimalny interwał między requestami
         if (!empty($this->requests)) {
             $lastRequest = end($this->requests);
             if ($now - $lastRequest < $this->minInterval) {
@@ -30,13 +24,9 @@ class RateLimiter
                 throw new RateLimitException($waitTime, 'Minimum interval between requests not met');
             }
         }
-
-        // Usuń stare requesty spoza okna czasowego
         $this->requests = array_filter($this->requests, function($timestamp) use ($now) {
             return $now - $timestamp < $this->timeWindow;
         });
-
-        // Sprawdź czy nie przekroczono limitu
         if (count($this->requests) >= $this->maxRequests) {
             $oldestRequest = min($this->requests);
             $waitTime = $this->timeWindow - ($now - $oldestRequest);
@@ -55,7 +45,6 @@ class RateLimiter
         $this->requests = array_filter($this->requests, function($timestamp) use ($now) {
             return $now - $timestamp < $this->timeWindow;
         });
-
         return max(0, $this->maxRequests - count($this->requests));
     }
 
@@ -64,7 +53,6 @@ class RateLimiter
         if (empty($this->requests)) {
             return time();
         }
-
         $oldestRequest = min($this->requests);
         return $oldestRequest + $this->timeWindow;
     }

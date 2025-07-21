@@ -1,7 +1,6 @@
 <?php
 
 namespace SCA\InFakt\Model;
-
 use SCA\InFakt\Util\ModelUtil;
 use SCA\InFakt\Util\ValidatorModel;
 
@@ -54,6 +53,7 @@ class OssInvoiceModel
     public function getCountry(): string {
         return $this->country;
     }
+
 
     public function setCountry(string $country): void {
         $this->country = $country;
@@ -250,7 +250,6 @@ class OssInvoiceModel
     public function setServices(array $services): void {
         $this->services[] = $services;
     }
-
 
     public function getAll($object): array {
         return ModelUtil::getAll($object);

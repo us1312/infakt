@@ -98,7 +98,6 @@ class Pagination
             'limit' => $limit,
             'offset' => ($page - 1) * $limit
         ];
-
         return array_merge($params, $additionalParams);
     }
 }

@@ -36,7 +36,6 @@ class OssInvoiceModule extends BaseModule
     public function list(array $filters = [], int $page = 1, int $limit = 20): array
     {
         $cleanFilters = $this->buildQueryParametersArray($filters);
-        
         return $this->buildPaginatedRequest(self::ENDPOINT, $cleanFilters, $page, $limit);
     }
 
@@ -60,6 +59,7 @@ class OssInvoiceModule extends BaseModule
 
     public function getAllOssInvoices(array $filters = []): array
     {
-        return $this->getAllPages(self::ENDPOINT, $filters);
+        $cleanFilters = $this->buildQueryParametersArray($filters);
+        return $this->getAllPages(self::ENDPOINT, $cleanFilters);
     }
 }

@@ -30,7 +30,6 @@ class CustomerModule extends BaseModule
     public function list(array $filters = [], int $page = 1, int $limit = 20): array
     {
         $cleanFilters = $this->buildQueryParametersArray($filters);
-        
         return $this->buildPaginatedRequest(self::ENDPOINT, $cleanFilters, $page, $limit);
     }
 
