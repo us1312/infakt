@@ -7,7 +7,7 @@ class OssInvoiceModule extends BaseModule {
     const ASYNC = '/async';
 
     public function create(array $data): array {
-        return $this->request('POST', self::ENDPOINT . '.json', ['json' => $data]);
+        return $this->request('POST', self::ASYNC . self::ENDPOINT . '.json', ['json' => $data]);
     }
 
     public function read(string $id): array {
