@@ -38,7 +38,7 @@ class ApiClient
         $this->logger = $logger;
         $this->rateLimiter = $rateLimiter ?? new RateLimiter();
         $this->baseUri = $this->sandbox
-            ? rtrim('https://api.sandbox.infakt.pl/v3', '/')
+            ? rtrim('https://api.sandbox-infakt.pl/v3', '/')
             : rtrim('https://api.infakt.pl/v3', '/');
         $this->vatInvoiceModule = new VatInvoiceModule($this);
         $this->ossInvoiceModule = new OssInvoiceModule($this);

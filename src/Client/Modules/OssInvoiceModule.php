@@ -24,6 +24,10 @@ class OssInvoiceModule extends BaseModule {
         return true;
     }
 
+    public function checkStatus(string $id): array {
+        return $this->request('GET', self::ASYNC . self::ENDPOINT . '/status' . "/{$id}.json");
+    }
+
     public function downloadPdf(string $id): array|string {
         return $this->request('GET', self::ENDPOINT . "/{$id}/pdf.json?document_type=original");
     }
