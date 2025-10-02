@@ -25,6 +25,14 @@ class VatInvoiceModule extends BaseModule {
         return true;
     }
 
+    public function getLink(string $id) {
+        return $this->request('GET', self::ENDPOINT . "/{$id}/share_links.json");
+    }
+
+    public function createLink(string $id) {
+        return $this->request('POST', self::ENDPOINT . "/{$id}/share_links.json");
+    }
+
     public function checkStatus(string $id): array {
         return $this->request('GET', self::ASYNC . self::ENDPOINT . self::ENDPOINT_STATUS . "/{$id}.json");
     }
