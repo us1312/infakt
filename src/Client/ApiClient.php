@@ -36,7 +36,6 @@ class ApiClient
     ) {
         $this->httpClient = $httpClient ?? HttpClient::create();
         $this->logger = $logger;
-        $this->rateLimiter = $rateLimiter ?? new RateLimiter();
         $this->baseUri = $this->sandbox
             ? rtrim('https://api.sandbox.infakt.pl/v3', '/')
             : rtrim('https://api.infakt.pl/v3', '/');
@@ -44,6 +43,9 @@ class ApiClient
         $this->ossInvoiceModule = new OssInvoiceModule($this);
         $this->ossTaxRates = new OssTaxRates($this);
         $this->customerModule = new CustomerModule($this);
+        if(!$this->sandbox){
+            $this->rateLimiter = $rateLimiter ?? new RateLimiter(160, 60, 0);
+        }
     }
 
     public function request(string $method, string $endpoint, array $options = []): array|string {
