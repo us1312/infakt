@@ -21,11 +21,20 @@ class OssTaxRates extends BaseModule {
                 $this->metaInfo = $response['metainfo'];
             }
             $processedCount += count($this->countryEntities);
+            $bestRate = null;
+            
             foreach ($this->countryEntities as $rate) {
-                if ($rate['country'] === $country && !$rate['reduced']) {
-                    $allRates[] = $rate;
-                    break 2;
+                if ($rate['country'] !== $country || $rate['reduced']) {
+                    continue;
                 }
+                
+                if ($bestRate === null || $rate['value'] > $bestRate['value']) {
+                    $bestRate = $rate;
+                }
+            }
+            
+            if ($bestRate !== null) {
+                $allRates[] = $bestRate;
             }
             $endpoint = $this->metaInfo['next'] ?? null;
         } while ($endpoint && $processedCount < $this->metaInfo['total_count']);

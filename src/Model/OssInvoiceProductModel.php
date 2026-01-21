@@ -12,7 +12,7 @@ class OssInvoiceProductModel {
     public string $name;
     public ?int $netPrice = null;
     public int $quantity;
-    public int $taxRate;
+    public float $taxRate;
     public ?int $unitNetPrice = null;
     public ?string $unit = null;
 
@@ -64,11 +64,11 @@ class OssInvoiceProductModel {
         $this->quantity = $quantity;
     }
 
-    public function getTaxRate(): int {
+    public function getTaxRate(): float {
         return $this->taxRate;
     }
 
-    public function setTaxRate(int $taxRate): void {
+    public function setTaxRate(float $taxRate): void {
         $this->taxRate = $taxRate;
     }
 
