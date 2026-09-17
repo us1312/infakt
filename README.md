@@ -163,14 +163,54 @@ if (empty($errors)) {
 }
 ```
 
+### KSeF (e-Faktury, API KSeF 2.0)
+
+Wymaga konta inFakt zintegrowanego z KSeF (certyfikat konfiguruje się w aplikacji inFakt). Sandbox inFakt jest automatycznie połączony z testowym środowiskiem KSeF.
+
+```php
+// Status integracji konta z KSeF
+$apiClient->ksefModule->isIntegrated();            // bool
+$apiClient->ksefModule->integrationStatus();       // ['active' => true, ...]
+
+// Wysyłka istniejącej faktury (uuid dokumentu inFakt) — asynchroniczna
+$result = $apiClient->ksefModule->send($invoiceUuid);
+// ['request_uuid' => ..., 'invoice_uuid' => ..., 'ksef_number' => null, 'status' => 'sent', 'status_description' => ...]
+
+// Wysyłka wielu faktur naraz
+$results = $apiClient->ksefModule->sendMany([$uuid1, $uuid2]);
+
+// Status przetwarzania: pending → sent → success (ksef_number) | error (status_description) | rejected
+$status = $apiClient->ksefModule->status($invoiceUuid);
+KsefModule::isFinal($status['status']);
+
+// XML faktury (FA(3)) i import z KSeF
+$xml = $apiClient->ksefModule->downloadXml($invoiceUuid);
+$incomes = $apiClient->ksefModule->importIncomes(['invoice_date' => ['modifier' => 'gteq', 'value' => '2026-01-01']]);
+$invoice = $apiClient->ksefModule->importByKsefNumber('7343521162-20231004-47A70D8BD670-57');
+
+// Automatyczna wysyłka do KSeF zaraz po utworzeniu faktury
+$invoice = $apiClient->vatInvoiceModule->create($data, sendToKsef: true);
+
+// Alias na fakturze VAT, opcjonalnie z powiadomieniem klienta e-mailem
+$apiClient->vatInvoiceModule->sendToKsef($invoiceUuid, ['print_type' => 'original', 'recipient' => 'klient@example.com']);
+```
+
+Finalny status wysyłki przychodzi też webhookiem inFakt (`send_to_ksef_success` / `send_to_ksef_error`). Faktury OSS nie podlegają wysyłce do KSeF.
+
 ## 📋 Przykłady
 
 Sprawdź katalog `examples/`:
 - `basic_usage.php` - podstawowe operacje
 - `advanced_features.php` - zaawansowane funkcje
 - `oss_invoices.php` - faktury OSS
+- `ksef.php` - wysyłka faktur do KSeF i sprawdzanie statusu
 
 ## 🔄 Changelog
+
+### v1.2.0
+- ✅ Moduł `ksefModule` (API KSeF 2.0): status integracji, wysyłka, status, XML, import
+- ✅ `vatInvoiceModule->create($data, sendToKsef: true)` i `sendToKsef()`
+- ✅ Poprawka: rate limiter inicjalizowany także na sandboxie
 
 ### v1.1.0
 - ✅ Kompletne metody CRUD dla wszystkich modułów
