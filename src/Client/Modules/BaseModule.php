@@ -10,7 +10,7 @@ abstract class BaseModule {
     public function __construct(protected ApiClient $client) {}
 
     protected function buildQueryParametersArray(array $filters) {
-        $allowedModifiers = ['eq', 'cont', 'lt', 'gt', 'lteq', 'greq'];
+        $allowedModifiers = ['eq', 'cont', 'lt', 'gt', 'lteq', 'gteq', 'greq'];
         $cleanFilters = [];
         foreach ($filters as $fieldName => $filterData) {
             if (!is_array($filterData) || !isset($filterData['modifier']) || !isset($filterData['value'])) {

@@ -7,7 +7,7 @@ class OssInvoiceModule extends BaseModule {
     const ASYNC = '/async';
 
     public function create(array $data): array {
-        return $this->request('POST', self::ENDPOINT . '.json', ['json' => $data]);
+        return $this->request('POST', self::ASYNC . self::ENDPOINT . '.json', ['json' => $data]);
     }
 
     public function read(string $id): array {
@@ -22,6 +22,10 @@ class OssInvoiceModule extends BaseModule {
         $this->request('DELETE', self::ENDPOINT . "/{$id}");
 
         return true;
+    }
+
+    public function checkStatus(string $id): array {
+        return $this->request('GET', self::ASYNC . self::ENDPOINT . '/status' . "/{$id}.json");
     }
 
     public function downloadPdf(string $id): array|string {

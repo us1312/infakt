@@ -3,6 +3,7 @@
 namespace SCA\InFakt\Client;
 
 use SCA\InFakt\Client\Modules\CustomerModule;
+use SCA\InFakt\Client\Modules\KsefModule;
 use SCA\InFakt\Client\Modules\OssInvoiceModule;
 use SCA\InFakt\Client\Modules\OssTaxRates;
 use SCA\InFakt\Client\Modules\VatInvoiceModule;
@@ -21,6 +22,7 @@ class ApiClient
     public OssInvoiceModule $ossInvoiceModule;
     public OssTaxRates $ossTaxRates;
     public CustomerModule $customerModule;
+    public KsefModule $ksefModule;
     private HttpClientInterface $httpClient;
     private string $baseUri;
     private ?LoggerInterface $logger;
@@ -37,15 +39,14 @@ class ApiClient
         $this->httpClient = $httpClient ?? HttpClient::create();
         $this->logger = $logger;
         $this->baseUri = $this->sandbox
-            ? rtrim('https://api.sandbox.infakt.pl/v3', '/')
+            ? rtrim('https://api.sandbox-infakt.pl/v3', '/')
             : rtrim('https://api.infakt.pl/v3', '/');
         $this->vatInvoiceModule = new VatInvoiceModule($this);
         $this->ossInvoiceModule = new OssInvoiceModule($this);
         $this->ossTaxRates = new OssTaxRates($this);
         $this->customerModule = new CustomerModule($this);
-        if(!$this->sandbox){
-            $this->rateLimiter = $rateLimiter ?? new RateLimiter(160, 60, 0);
-        }
+        $this->ksefModule = new KsefModule($this);
+        $this->rateLimiter = $rateLimiter ?? ($this->sandbox ? new RateLimiter(1000, 60, 0) : new RateLimiter(160, 60, 0));
     }
 
     public function request(string $method, string $endpoint, array $options = []): array|string {

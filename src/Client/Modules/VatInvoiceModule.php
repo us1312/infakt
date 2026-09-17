@@ -7,8 +7,22 @@ class VatInvoiceModule extends BaseModule {
     const ASYNC = '/async';
     const ENDPOINT_STATUS = '/status';
     const ENDPOINT_PAID = '/paid';
-    public function create(array $data): array {
+    public function create(array $data, bool $sendToKsef = false): array {
+        if ($sendToKsef) {
+            $data['send_to_ksef'] = true;
+        }
+
         return $this->request('POST', self::ASYNC . self::ENDPOINT . '.json', ['json' => $data]);
+    }
+
+    public function sendToKsef(string $id, ?array $informViaEmail = null): array {
+        $options = $informViaEmail ? ['json' => ['inform_via_email' => $informViaEmail]] : [];
+
+        return $this->request('POST', self::ENDPOINT . "/{$id}/send_to_ksef.json", $options);
+    }
+
+    public function downloadKsefXml(string $id): array|string {
+        return $this->request('GET', self::ENDPOINT . "/{$id}/download_xml.json");
     }
 
     public function read(string $id): array {
@@ -23,6 +37,14 @@ class VatInvoiceModule extends BaseModule {
         $this->request('DELETE', self::ENDPOINT . "/{$id}");
 
         return true;
+    }
+
+    public function getLink(string $id) {
+        return $this->request('GET', self::ENDPOINT . "/{$id}/share_links.json");
+    }
+
+    public function createLink(string $id) {
+        return $this->request('POST', self::ENDPOINT . "/{$id}/share_links.json");
     }
 
     public function checkStatus(string $id): array {
